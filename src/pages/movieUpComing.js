@@ -1,32 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PageTemplate from '../components/templateMovieListPage'
 import { getUpComingMovies } from "../api/tmdb-api";
+import { useQuery } from "react-query";
+import Spinner from "../components/spinner";
+import useFiltering from "../hooks/useFiltering";
+import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
+
+
+import MovieFilterUI, {
+  titleFilter,
+  genreFilter,
+} from "../components/movieFilterUI";
+
+const titleFiltering = {
+  name: "title",
+  value: "",
+  condition: titleFilter,
+};
+const genreFiltering = {
+  name: "genre",
+  value: "0",
+  condition: genreFilter,
+};
 
 const MovieUpComing = (props) => {
-  const [movies, setMovies] = useState([]);
-  const favourites = movies.filter(m => m.favourite)
-  localStorage.setItem('favourites', JSON.stringify(favourites))
+  const { data, error, isLoading, isError } = useQuery("upcoming", getUpComingMovies);
+  const { filterValues, setFilterValues, filterFunction } = useFiltering(
+    [],
+    [titleFiltering, genreFiltering]
+  );
 
-  const addToFavourites = (movieId) => {
-    const updatedMovies = movies.map((m) =>
-      m.id === movieId ? { ...m, favourite: true } : m
-    );
-    setMovies(updatedMovies);
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
+
+
+  const changeFilterValues = (type, value) => {
+    const newf = { name: type, value: value };
+    const newFilters =
+      type === "title" ? [newf, filterValues[1]] : [filterValues[0], newf];
+    setFilterValues(newFilters);
   };
 
-  useEffect(() => {
-    getUpComingMovies().then(movies => {
-      setMovies(movies);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const movies = data ? data.results : [];
+  const displayedMovies = filterFunction(movies);
 
   return (
-    <PageTemplate
-      title='Up Coming Movies'
-      movies={movies}
-      selectFavourite={addToFavourites}
-    />
+    <>
+      <PageTemplate
+        title="Up Coming Movies"
+        movies={displayedMovies}
+        action={(movie) => {
+          return <AddToFavouritesIcon movie={movie} />
+        }}
+      />
+      <MovieFilterUI
+        filterInputChange={changeFilterValues}
+        titleFilter={filterValues[0].value}
+        genreFilter={filterValues[1].value}
+      />
+    </>
   );
 };
 export default MovieUpComing;
