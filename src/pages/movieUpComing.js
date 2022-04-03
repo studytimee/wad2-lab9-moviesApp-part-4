@@ -24,6 +24,7 @@ const genreFiltering = {
 };
 
 const MovieUpComing = (props) => {
+  // Used react-query for caching the movies data in the browser
   const { data, error, isLoading, isError } = useQuery("upcoming", getUpComingMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
