@@ -14,6 +14,7 @@ import StarRateIcon from "@material-ui/icons/StarRate";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
+import PlayListIcon from "@material-ui/icons/PlaylistAdd";
 
 const useStyles = makeStyles({
   card: { maxWidth: 345 },
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 export default function MovieCard({ movie, action }) {
   const classes = useStyles();
   const { favourites, addToFavourites } = useContext(MoviesContext);
+  const { watchLists, addToWatchLists } = useContext(MoviesContext);
 
   if (favourites.find((id) => id === movie.id)) {
     movie.favourite = true;
@@ -33,7 +35,13 @@ export default function MovieCard({ movie, action }) {
     movie.favourite = false
   }
 
-  
+  if (watchLists.find((id) => id === movie.id)) {
+    movie.watchList = true;
+  } else {
+    movie.watchList = false
+  }
+
+
   return (
     <Card className={classes.card}>
       <CardHeader

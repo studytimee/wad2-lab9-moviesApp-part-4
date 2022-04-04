@@ -24,16 +24,15 @@ export const genreFiltering = {
   },
 };
 
-const FavouriteMoviesPage = () => {
-  const { favourites: movieIds } = useContext(MoviesContext);
-  const { watchLists: wListmovieIds } = useContext(MoviesContext);
+const WatchListPage = () => {
+  const { watchLists: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
   );
 
   // Create an array of queries and run in parallel.
-  const favouriteMovieQueries = useQueries(
+  const watchListQueries = useQueries(
     movieIds.map((movieId) => {
       return {
         queryKey: ["movie", { id: movieId }],
@@ -43,19 +42,20 @@ const FavouriteMoviesPage = () => {
   );
 
   // Check if any of the parallel queries is still loading.
-  const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
+  const isLoading = watchListQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
     return <Spinner />;
   }
 
-  const allFavourites = favouriteMovieQueries.map((q) => q.data);
-  const displayMovies = allFavourites
-    ? filterFunction(allFavourites)
+  const allWatchLists = watchListQueries.map((q) => q.data);
+  const displayMovies = allWatchLists
+    ? filterFunction(allWatchLists)
     : [];
 
-  console.log(`Favorite Page movie id:  ${movieIds}`)
+  console.log(`Watch List Page movie id:  ${movieIds}`)
   console.log(`Display Movies:  ${displayMovies}`)
+
 
 
   const changeFilterValues = (type, value) => {
@@ -64,10 +64,12 @@ const FavouriteMoviesPage = () => {
       type === "title" ? [newf, filterValues[1]] : [filterValues[0], newf];
     setFilterValues(newFilters);
   };
+  console.log(displayMovies)
+
   return (
     <>
       <PageTemplate
-        title="Favourite Movies"
+        title="Movies Watch List "
         movies={displayMovies}
         action={(movie) => {
           return (
@@ -87,4 +89,4 @@ const FavouriteMoviesPage = () => {
   );
 };
 
-export default FavouriteMoviesPage;
+export default WatchListPage;

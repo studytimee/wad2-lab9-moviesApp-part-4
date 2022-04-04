@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
+import AddToWatchListsIcon from '../components/cardIcons/addToWatchLists'
 import PlayList from "../components/cardIcons/playList";
 
 import MovieFilterUI, {
@@ -56,11 +57,7 @@ const MovieUpComing = (props) => {
         title="Up Coming Movies"
         movies={displayedMovies}
         action={(movie) => {
-          return (
-            <>
-              <PlayList movie={movie} />
-            </>
-          )
+          return <AddToWatchListsIcon movie={movie} />
         }}
       />
       <MovieFilterUI

@@ -6,7 +6,7 @@ const PlayListIcon = ({ movie }) => {
   return (
     <Link
       to={{
-        pathname: `/reviews/form`,
+        pathname: `/movies/watchList`,
         state: {
           movieId: movie.id,
         },

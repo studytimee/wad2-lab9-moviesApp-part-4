@@ -5,6 +5,7 @@ import Spinner from "../components/spinner";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
+import AddToWatchListsIcon from '../components/cardIcons/addToWatchLists'
 
 import MovieFilterUI, {
   titleFilter,
