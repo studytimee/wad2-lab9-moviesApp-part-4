@@ -22,6 +22,9 @@ const useStyles = makeStyles({
   avatar: {
     backgroundColor: "rgb(255, 0, 0)",
   },
+  test: {
+    backgroundColor: "rgb(255, 0, 0)",
+  },
 });
 
 export default function MovieCard({ movie, action }) {
@@ -47,11 +50,17 @@ export default function MovieCard({ movie, action }) {
       <CardHeader
         className={classes.header}
         avatar={
-          movie.favourite ? (
+          movie.watchList ? (
             <Avatar className={classes.avatar}>
               <FavoriteIcon />
             </Avatar>
           ) : null
+          // PlayListIcon Avatar not completed yet....
+          // movie.watchList ? (
+          //   <Avatar className={classes.avatar}>
+          //     <PlayListIcon />
+          //   </Avatar>
+          // ) : null
         }
         title={
           <Typography variant="h5" component="p">
